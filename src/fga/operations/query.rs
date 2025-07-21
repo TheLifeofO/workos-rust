@@ -51,7 +51,7 @@ pub trait Query {
     ///
     /// let result = workos
     ///     .fga()
-    ///     .query(None, &QueryParams {
+    ///     .query(&QueryParams {
     ///        warrant_token: None,
     ///        q: "document:doc_123 viewer",
     ///        context: None,
@@ -63,22 +63,18 @@ pub trait Query {
     /// # Ok(())
     /// # }
     /// ```
-    async fn query(&self, token: Option<String>,params: &QueryParams<'_>) -> WorkOsResult<PaginatedList<QueryResponse>, QueryError>;
+    async fn query(&self, params: &QueryParams<'_>) -> WorkOsResult<PaginatedList<QueryResponse>, QueryError>;
 }
 
 #[async_trait]
 impl Query for Fga<'_> {
-    async fn query(&self, token: Option<String>, params: &QueryParams<'_>) -> WorkOsResult<PaginatedList<QueryResponse>, QueryError> {
+    async fn query(&self, params: &QueryParams<'_>) -> WorkOsResult<PaginatedList<QueryResponse>, QueryError> {
         let url = self.workos.base_url().join("/fga/v1/query")?;
         let result = self
             .workos
             .client()
             .get(url)
-            .bearer_auth(if let Some(token) = token {
-                token
-            } else {
-                self.workos.key().to_string()
-            })
+            .bearer_auth(self.workos.key())
             .json(&params)
             .send()
             .await?
@@ -124,7 +120,7 @@ mod test {
 
         let result = workos
             .fga()
-            .query(None, &QueryParams {
+            .query(&QueryParams {
                 warrant_token: None,
                 q: "",
                 context: None,
