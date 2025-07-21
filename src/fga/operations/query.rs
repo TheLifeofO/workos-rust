@@ -73,7 +73,7 @@ impl Query for Fga<'_> {
         let result = self
             .workos
             .client()
-            .post(url)
+            .get(url)
             .bearer_auth(if let Some(token) = token {
                 token
             } else {
