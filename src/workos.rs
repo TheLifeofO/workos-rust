@@ -3,6 +3,7 @@ use url::{ParseError, Url};
 use crate::ApiKey;
 use crate::admin_portal::AdminPortal;
 use crate::directory_sync::DirectorySync;
+use crate::fga::Fga;
 use crate::mfa::Mfa;
 use crate::organizations::Organizations;
 use crate::passwordless::Passwordless;
@@ -53,6 +54,11 @@ impl WorkOs {
     /// Returns an [`Mfa`] instance.
     pub fn mfa(&self) -> Mfa {
         Mfa::new(self)
+    }
+
+    /// Returns an [`Fga`] instance.
+    pub fn fga(&self) -> Fga {
+        Fga::new(self)
     }
 
     /// Returns an [`Organizations`] instance.

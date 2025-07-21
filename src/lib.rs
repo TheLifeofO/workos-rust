@@ -14,6 +14,7 @@ pub mod passwordless;
 pub mod sso;
 pub mod user_management;
 pub mod webhooks;
+pub mod fga;
 
 pub use crate::core::*;
 pub use crate::workos::*;
