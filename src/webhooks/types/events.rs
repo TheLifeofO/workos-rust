@@ -12,6 +12,7 @@ mod directory_group_user_removed;
 mod directory_user_created;
 mod directory_user_deleted;
 mod directory_user_updated;
+mod email_verification_succeeded;
 
 pub use connection_activated::*;
 pub use connection_deactivated::*;
@@ -27,3 +28,4 @@ pub use directory_group_user_removed::*;
 pub use directory_user_created::*;
 pub use directory_user_deleted::*;
 pub use directory_user_updated::*;
+pub use email_verification_succeeded::*;
