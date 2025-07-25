@@ -75,7 +75,7 @@ impl Query for Fga<'_> {
             .client()
             .get(url)
             .bearer_auth(self.workos.key())
-            .json(&params)
+            .query(&params)
             .send()
             .await?
             .handle_unauthorized_or_generic_error()?
@@ -104,17 +104,10 @@ mod test {
             .build();
 
         server
-            .mock("POST", "/fga/v1/query")
+            .mock("GET", "/fga/v1/query")
             .match_header("Authorization", "Bearer sk_example_123456789")
             .with_status(200)
-            .with_body(
-                json!({
-                    "resource": "document:doc_123",
-                    "relation": "viewer",
-                    "subjects": ["user_123", "user_456"]
-                })
-                .to_string(),
-            )
+            .with_query("q", "document:doc_123 viewer")
             .create_async()
             .await;
 
