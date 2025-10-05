@@ -46,6 +46,41 @@ pub struct AuthenticationFactor {
     pub timestamps: Timestamps,
 }
 
+/// WorkOs docs are incorrect
+/// [WorkOS Docs: Authentication Factor](https://workos.com/docs/reference/mfa/authentication-factor)
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct UserAuthenticationFactor {
+    /// The unique ID of the authentication factor.
+    pub id: AuthenticationFactorId,
+
+    /// The type of the authentication factor.
+    #[serde(flatten)]
+    pub r#type: UserAuthenticationFactorType,
+
+    /// The timestamps for the authentication factor.
+    #[serde(flatten)]
+    pub timestamps: Timestamps,
+}
+
+/// The type of an [`AuthenticationFactor`].
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum UserAuthenticationFactorType {
+    /// Time-based one-time password (TOTP).
+    Totp {
+        /// Your application or company name displayed in the user's authenticator app. Defaults to your WorkOS team name.
+        issuer: String,
+
+        /// The user's account name displayed in their authenticator app. Defaults to the user's email.
+        user: String,
+    },
+    /// One-time password via SMS message.
+    Sms {
+        /// The phone number the factor was enrolled with.
+        phone_number: String,
+    },
+}
+
 /// The type of an [`AuthenticationFactor`].
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
