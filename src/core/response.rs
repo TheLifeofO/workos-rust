@@ -29,6 +29,7 @@ impl ResponseExt for Response {
 
     async fn handle_generic_error<E>(self) -> WorkOsResult<Self, E> {
         let status = self.status();
+
         if status.is_client_error() || status.is_server_error() {
             if self
                 .headers()

@@ -94,12 +94,15 @@ pub enum AuthenticationFactorType {
         user: String,
 
         /// Base64 encoded image containing scannable QR code.
+        #[serde(default)]
         qr_code: String,
 
         /// TOTP secret that can be manually entered into some authenticator apps in place of scanning a QR code.
+        #[serde(default)]
         secret: String,
 
         /// The `otpauth` URI that is encoded by the provided `qr_code`.
+        #[serde(default)]
         uri: String,
     },
     /// One-time password via SMS message.

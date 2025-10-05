@@ -2,7 +2,7 @@ use async_trait::async_trait;
 use serde::Serialize;
 use thiserror::Error;
 
-use crate::mfa::{AuthenticationFactor, UserAuthenticationFactor};
+use crate::mfa::AuthenticationFactor;
 use crate::user_management::{UserId, UserManagement};
 use crate::{PaginatedList, PaginationParams, ResponseExt, WorkOsError, WorkOsResult};
 
@@ -58,7 +58,7 @@ pub trait ListAuthFactors {
     async fn list_auth_factors(
         &self,
         params: &ListAuthFactorsParams<'_>,
-    ) -> WorkOsResult<PaginatedList<UserAuthenticationFactor>, ()>;
+    ) -> WorkOsResult<PaginatedList<AuthenticationFactor>, ()>;
 }
 
 #[async_trait]
@@ -66,7 +66,7 @@ impl ListAuthFactors for UserManagement<'_> {
     async fn list_auth_factors(
         &self,
         params: &ListAuthFactorsParams<'_>,
-    ) -> WorkOsResult<PaginatedList<UserAuthenticationFactor>, ()> {
+    ) -> WorkOsResult<PaginatedList<AuthenticationFactor>, ()> {
         let url = self.workos.base_url().join(&format!(
             "/user_management/users/{}/auth_factors",
             params.id
@@ -82,7 +82,7 @@ impl ListAuthFactors for UserManagement<'_> {
             .await?
             .handle_unauthorized_or_generic_error()
             .await?
-            .json::<PaginatedList<UserAuthenticationFactor>>()
+            .json::<PaginatedList<AuthenticationFactor>>()
             .await?;
 
         Ok(auth_factors)
